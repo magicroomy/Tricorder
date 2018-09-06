@@ -1,0 +1,46 @@
+{
+    "description": "Arduino library for BME280 sensors.", 
+    "repository": {
+        "url": "https://github.com/adafruit/Adafruit_BME280_Library", 
+        "type": "git"
+    }, 
+    "platforms": [
+        "atmelavr", 
+        "atmelsam", 
+        "espressif8266", 
+        "intel_arc32", 
+        "microchippic32", 
+        "nordicnrf51", 
+        "teensy", 
+        "timsp430"
+    ], 
+    "export": {
+        "exclude": [
+            "extras", 
+            "docs", 
+            "tests", 
+            "test", 
+            "*.doxyfile", 
+            "*.pdf"
+        ], 
+        "include": null
+    }, 
+    "authors": [
+        {
+            "maintainer": true, 
+            "name": "Adafruit", 
+            "url": null, 
+            "email": "info@adafruit.com"
+        }
+    ], 
+    "keywords": [
+        "sensors"
+    ], 
+    "id": 166, 
+    "name": "Adafruit BME280 Library", 
+    "frameworks": [
+        "arduino"
+    ], 
+    "version": "1.0.7", 
+    "homepage": null
+}

@@ -1,0 +1,46 @@
+{
+    "description": "Required for all Adafruit Unified Sensor based libraries.", 
+    "repository": {
+        "url": "https://github.com/adafruit/Adafruit_Sensor", 
+        "type": "git"
+    }, 
+    "platforms": [
+        "atmelavr", 
+        "atmelsam", 
+        "espressif8266", 
+        "intel_arc32", 
+        "microchippic32", 
+        "nordicnrf51", 
+        "teensy", 
+        "timsp430"
+    ], 
+    "export": {
+        "exclude": [
+            "extras", 
+            "docs", 
+            "tests", 
+            "test", 
+            "*.doxyfile", 
+            "*.pdf"
+        ], 
+        "include": null
+    }, 
+    "authors": [
+        {
+            "maintainer": true, 
+            "name": "Adafruit", 
+            "url": null, 
+            "email": "info@adafruit.com"
+        }
+    ], 
+    "keywords": [
+        "sensors"
+    ], 
+    "id": 31, 
+    "name": "Adafruit Unified Sensor", 
+    "frameworks": [
+        "arduino"
+    ], 
+    "version": "1.0.2", 
+    "homepage": null
+}
