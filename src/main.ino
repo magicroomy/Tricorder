@@ -3,17 +3,23 @@
 #include <odroid_go.h>
 #include <Wire.h>
 
-#include <Adafruit_MLX90614.h>
+
 #include <VL53L0X.h>
 #include "Adafruit_BME280.h"
 #include "Adafruit_CCS811.h"
 #include "veml6040.h"
 #include <SparkFun_VEML6075_Arduino_Library.h>
 
+#include <SparkFunMLX90614.h> // SparkFunMLX90614 Arduino library
+
+#include <ADXL345.h>
+
 #define SDA 15
 #define SCK 4
 
 #define BME280_ADD 0x77
+
+ADXL345 accel(ADXL345_ALT);
 
 VEML6040 RGBWSensor;
 VL53L0X distSensor;
@@ -24,7 +30,9 @@ VEML6075 uv; // Create a VEML6075 object
 
 Adafruit_BME280 bme;
 
-Adafruit_MLX90614 mlx = Adafruit_MLX90614();
+
+IRTherm therm;
+//Adafruit_MLX90614 mlx = Adafruit_MLX90614();
 
 float distance ;
 float luxR ;
@@ -44,6 +52,10 @@ float infrared ;
 float co2 ;
 float voc ;
 
+float gfX ;
+float gfY ;
+float gfZ ;
+
 void displayUI()
 {
   GO.lcd.clear();
@@ -52,9 +64,12 @@ void displayUI()
   GO.lcd.printf("dist : %.1f\n", distance);
   //  GO.lcd.printf("lux R/G/B/W/CCT/AMB: %f/%f/%f/%f/%f/%f\n", luxR,luxG, luxB, luxW, luxCCT, luxAMB);
   GO.lcd.printf("h/t/p : %.1f/%.1f/%.1f\n", humidity, ambientTemperature,pressure );
-  GO.lcd.printf("uvA : %.1f uvB : %.1f uvI : %.1f\n", uvA, uvB, uvIndex);
+  GO.lcd.printf("UV I: %.1f A: %.1f B: %.1f\n",  uvIndex, uvA, uvB);
   GO.lcd.printf("IR : %.1f\n", infrared);
   GO.lcd.printf("CO2 : %.1f  VOC: %.1f\n", co2, voc);
+  GO.lcd.printf("gf X: %.1f Y: %.1f Z: %.1f\n", gfX, gfY, gfZ);
+
+
 }
 
 void setup()
@@ -116,7 +131,7 @@ void setup()
 
   Serial.println("INIT VOC") ;
   // VOC
-  if(!ccs.begin(  0x5A  )){
+  if(!ccs.begin(  0x5B  )){
     Serial.println("Failed to start sensor! Please check your wiring.");
     while(1);
   }
@@ -133,8 +148,45 @@ void setup()
   // IR
 
   Serial.println("INIT IR") ;
+  therm.begin(0x5a); // Initialize thermal IR sensor
+  therm.setUnit(TEMP_C); // Set the library's units to Farenheit
 
-  mlx.begin();
+
+  //mlx.begin();
+
+
+  Serial.println("INIT GYRO") ;
+
+  byte deviceID = accel.readDeviceID();
+  if (deviceID != 0) {
+    Serial.printf("0x%2X\n", deviceID);
+  } else {
+    Serial.println("GYRO Device ID mismatch");
+    while(1) {
+      delay(100);
+    }
+  }
+
+  if (!accel.writeRate(ADXL345_RATE_200HZ)) {
+    Serial.println("GYRO write rate: failed");
+    while(1) {
+      delay(100);
+    }
+  }
+
+  if (!accel.writeRange(ADXL345_RANGE_2G)) {
+    Serial.println("GYRO write range: failed");
+    while(1) {
+      delay(100);
+    }
+  }
+
+  if (!accel.start()) {
+    Serial.println("GYRO start: failed");
+    while(1) {
+      delay(100);
+    }
+  }
 
 
   delay(200) ;
@@ -143,7 +195,7 @@ void setup()
 
 void loop()
 {
-  Serial.println(F("Loop"));
+  Serial.println(F("Read Dist"));
 
   distance = distSensor.readRangeContinuousMillimeters() / 10;
   delay(20) ;
@@ -162,6 +214,7 @@ void loop()
   */
   delay(20) ;
 
+  Serial.println(F("Read BME280"));
 
   humidity = bme.readHumidity() ;
   ambientTemperature = bme.readTemperature() ;
@@ -169,11 +222,15 @@ void loop()
 
   delay(20) ;
 
+  Serial.println(F("Read UV"));
+
   uvA = uv.uva() ;
   uvB = uv.uvb() ;
   uvIndex = uv.index() ;
 
   delay(20) ;
+
+  Serial.println(F("Read VOC"));
 
 
   if(ccs.available()){
@@ -193,7 +250,31 @@ void loop()
 
   delay(20) ;
 
-  infrared = (float) mlx.readObjectTempC();
+  Serial.println(F("Read IR"));
+
+
+  if (therm.read()) // On success, read() will return 1, on fail 0.
+  {
+    // Use the object() and ambient() functions to grab the object and ambient
+    // temperatures.
+    // They'll be floats, calculated out to the unit you set with setUnit().
+    Serial.print("Object: " + String(therm.object(), 2));
+    infrared = (float) therm.object();
+
+  }
+  else
+  {
+    Serial.println("Trouble with IR ") ;
+  }
+
+  Serial.println(F("Read Gyro"));
+  if (accel.update()) {
+    gfX = accel.getX() ;
+    gfY = accel.getY() ;
+    gfZ = accel.getZ() ;
+  }
+
+  //  infrared = (float) mlx.readObjectTempC();
 
   Serial.printf("\n\n");
 
@@ -203,6 +284,7 @@ void loop()
   Serial.printf("uvA : %.1f uvB : %.1f uvIndex : %.1f\n", uvA, uvB, uvIndex);
   Serial.printf("IR : %.1f\n", infrared);
   Serial.printf("cO2 : %.1f  VOC : %.1f\n", co2, voc);
+  Serial.printf("gf X: %.1f Y: %.1f Z: %.1f\n", gfX, gfY, gfZ);
 
   Serial.printf("\n\n");
 

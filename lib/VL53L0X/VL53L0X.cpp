@@ -319,6 +319,10 @@ uint8_t VL53L0X::readReg(uint8_t reg)
   last_status = Wire.endTransmission();
 
   Wire.requestFrom(address, (uint8_t)1);
+
+while ( Wire.available() != 1)
+;
+
   value = Wire.read();
 
   return value;
@@ -334,6 +338,9 @@ uint16_t VL53L0X::readReg16Bit(uint8_t reg)
   last_status = Wire.endTransmission();
 
   Wire.requestFrom(address, (uint8_t)2);
+  while ( Wire.available() != 2)
+  ;
+
   value  = (uint16_t)Wire.read() << 8; // value high byte
   value |=           Wire.read();      // value low byte
 
@@ -350,6 +357,9 @@ uint32_t VL53L0X::readReg32Bit(uint8_t reg)
   last_status = Wire.endTransmission();
 
   Wire.requestFrom(address, (uint8_t)4);
+
+  while ( Wire.available() != 4)
+  ;
   value  = (uint32_t)Wire.read() << 24; // value highest byte
   value |= (uint32_t)Wire.read() << 16;
   value |= (uint16_t)Wire.read() <<  8;
@@ -382,6 +392,8 @@ void VL53L0X::readMulti(uint8_t reg, uint8_t * dst, uint8_t count)
   last_status = Wire.endTransmission();
 
   Wire.requestFrom(address, count);
+  while ( Wire.available() != count)
+  ;
 
   while (count-- > 0)
   {
