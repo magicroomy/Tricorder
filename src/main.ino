@@ -3,36 +3,24 @@
 #include <odroid_go.h>
 #include <Wire.h>
 
-
-#include <VL53L0X.h>
-#include "Adafruit_BME280.h"
-#include "Adafruit_CCS811.h"
 #include "veml6040.h"
-#include <SparkFun_VEML6075_Arduino_Library.h>
-
-#include <SparkFunMLX90614.h> // SparkFunMLX90614 Arduino library
-
 #include <ADXL345.h>
+
+#include "BME280Sensor.h"
+#include "VEML6075Sensor.h"
+#include "VL53L0XSensor.h"
+#include "CCS811Sensor.h"
+#include "MLX90614Sensor.h"
+#include "Sensor.h"
+
 
 #define SDA 15
 #define SCK 4
 
-#define BME280_ADD 0x77
 
 ADXL345 accel(ADXL345_ALT);
 
 VEML6040 RGBWSensor;
-VL53L0X distSensor;
-
-Adafruit_CCS811 ccs;
-
-VEML6075 uv; // Create a VEML6075 object
-
-Adafruit_BME280 bme;
-
-
-IRTherm therm;
-//Adafruit_MLX90614 mlx = Adafruit_MLX90614();
 
 float distance ;
 float luxR ;
@@ -56,6 +44,14 @@ float gfX ;
 float gfY ;
 float gfZ ;
 
+BME280Sensor *bmeSensor = new BME280Sensor() ;
+VEML6075Sensor *veml6075Sensor = new VEML6075Sensor() ;
+VL53L0XSensor *vl53l0xSensor = new VL53L0XSensor() ;
+CCS811Sensor *ccs811Sensor = new CCS811Sensor() ;
+MLX90614Sensor *mlx90614Sensor = new MLX90614Sensor() ;
+
+Sensor *sensorlist[] = { bmeSensor, veml6075Sensor, vl53l0xSensor, ccs811Sensor, mlx90614Sensor};
+
 void displayUI()
 {
   GO.lcd.clear();
@@ -77,6 +73,9 @@ void setup()
   Serial.begin(115200) ;
   GO.begin();
   delay(200);
+
+
+
   Serial.println("Boot");
   GO.Speaker.setVolume(11);
 
@@ -101,56 +100,22 @@ void setup()
   RGBWSensor.setConfiguration(VEML6040_IT_320MS + VEML6040_AF_AUTO + VEML6040_SD_ENABLE);
   */
   delay(40) ;
-  Serial.println("INIT BME") ;
+  Serial.println("INIT Sensors") ;
 
 
-  bool status = bme.begin(BME280_ADD);
-  if (!status) {
-    Serial.println("Could not find a valid BME280 sensor, check wiring!");
-    while (1);
-  }
+  for ( int i = 0 ; i < (sizeof ( sensorlist) / sizeof (Sensor)) ; ++i)
+  {
+    Serial.printf("Init Sensor %d\n", i) ;
+    sensorlist[i]->begin() ;
+    Serial.printf("Init Sensor %d INITIALIZED\n", i) ;
 
-  delay(40) ;
-  // DISTANCE
-  Serial.println("INIT DISTANCE") ;
-
-  distSensor.init();
-  distSensor.setTimeout(500);
-  distSensor.startContinuous(100);
-
-
-  delay(40) ;
-  Serial.println("INIT UV") ;
-
-  if (uv.begin() == false) {
-    Serial.println("Unable to communicate with VEML6075.");
-    while (1) ;
   }
 
   delay(40) ;
 
-  Serial.println("INIT VOC") ;
-  // VOC
-  if(!ccs.begin(  0x5B  )){
-    Serial.println("Failed to start sensor! Please check your wiring.");
-    while(1);
-  }
-
-  //calibrate temperature sensor
-  while(!ccs.available());
-  float temp = ccs.calculateTemperature();
-  ccs.setTempOffset(temp - 25.0);
-  ccs.setDriveMode(CCS811_DRIVE_MODE_1SEC) ;
-
-  delay(40) ;
 
 
   // IR
-
-  Serial.println("INIT IR") ;
-  therm.begin(0x5a); // Initialize thermal IR sensor
-  therm.setUnit(TEMP_C); // Set the library's units to Farenheit
-
 
   //mlx.begin();
 
@@ -195,9 +160,17 @@ void setup()
 
 void loop()
 {
+  for ( int i = 0 ; i < (sizeof ( sensorlist) / sizeof (Sensor)) ; ++i)
+  {
+    Serial.printf("Update Sensor %d\n", i) ;
+    sensorlist[i]->update() ;
+    Serial.printf("Update Sensor %d DONE\n", i) ;
+
+  }
+
   Serial.println(F("Read Dist"));
 
-  distance = distSensor.readRangeContinuousMillimeters() / 10;
+  distance = vl53l0xSensor->getDistanceSensorData()->getValue();
   delay(20) ;
   /*
   luxR = RGBWSensor.getRed();
@@ -216,56 +189,28 @@ void loop()
 
   Serial.println(F("Read BME280"));
 
-  humidity = bme.readHumidity() ;
-  ambientTemperature = bme.readTemperature() ;
-  pressure = bme.readPressure() / 100.0F ;
+  humidity =  bmeSensor->getTempSensorData()->getValue();
+  ambientTemperature = bmeSensor->getHumSensorData()->getValue();
+  pressure = bmeSensor->getPressSensorData()->getValue() / 100.0F ;
 
   delay(20) ;
 
   Serial.println(F("Read UV"));
 
-  uvA = uv.uva() ;
-  uvB = uv.uvb() ;
-  uvIndex = uv.index() ;
+  uvA = veml6075Sensor->getUVASensorData()->getValue();
+  uvB = veml6075Sensor->getUVBSensorData()->getValue();
+  uvIndex = veml6075Sensor->getIndexSensorData()->getValue();
 
   delay(20) ;
 
   Serial.println(F("Read VOC"));
-
-
-  if(ccs.available()){
-    uint8_t stat = ccs.readData() ;
-    if(!stat){
-      ccs.calculateTemperature();
-      co2 = ccs.geteCO2();
-      voc = ccs.getTVOC();
-    }
-    else{
-      Serial.printf("CSS RET Value %d\n", stat);
-      ccs.calculateTemperature();
-      co2 = ccs.geteCO2();
-      voc = ccs.getTVOC();
-    }
-  }
+  co2 = ccs811Sensor->getCO2SensorData()->getValue();
+  voc =ccs811Sensor->getVOCSensorData()->getValue();
 
   delay(20) ;
-
   Serial.println(F("Read IR"));
 
-
-  if (therm.read()) // On success, read() will return 1, on fail 0.
-  {
-    // Use the object() and ambient() functions to grab the object and ambient
-    // temperatures.
-    // They'll be floats, calculated out to the unit you set with setUnit().
-    Serial.print("Object: " + String(therm.object(), 2));
-    infrared = (float) therm.object();
-
-  }
-  else
-  {
-    Serial.println("Trouble with IR ") ;
-  }
+  infrared = mlx90614Sensor->getTempSensorData()->getValue() ;
 
   Serial.println(F("Read Gyro"));
   if (accel.update()) {
