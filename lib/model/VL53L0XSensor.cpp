@@ -23,7 +23,11 @@ void VL53L0XSensor::update()
   if ( isOK)
   {
 
-    distanceData->setValue(((double)distSensor->readRangeContinuousMillimeters()) / 10) ;
+    double distance = ((double)distSensor->readRangeContinuousMillimeters()) / 10 ;
+    if ( distance > 120)
+      distance = 120 ;
+
+    distanceData->setValue(distance) ;
 
   }
 }

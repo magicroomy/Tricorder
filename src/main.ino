@@ -13,15 +13,16 @@
 #include "MLX90614Sensor.h"
 #include "Sensor.h"
 
+#include "Pages.h"
+#include "UIComponents.h"
 
 #define SDA 15
 #define SCK 4
 
 
 ADXL345 accel(ADXL345_ALT);
-
 VEML6040 RGBWSensor;
-
+/*
 float distance ;
 float luxR ;
 float luxG ;
@@ -43,6 +44,7 @@ float voc ;
 float gfX ;
 float gfY ;
 float gfZ ;
+*/
 
 BME280Sensor *bmeSensor = new BME280Sensor() ;
 VEML6075Sensor *veml6075Sensor = new VEML6075Sensor() ;
@@ -52,9 +54,30 @@ MLX90614Sensor *mlx90614Sensor = new MLX90614Sensor() ;
 
 Sensor *sensorlist[] = { bmeSensor, veml6075Sensor, vl53l0xSensor, ccs811Sensor, mlx90614Sensor};
 
+BarGraph *distGraph = new BarGraph(0,10,200,20,0,120,vl53l0xSensor->getDistanceSensorData()) ;
+Text *distText = new Text(210,25, "%.1lf", WHITE, BLACK, 2 ,vl53l0xSensor->getDistanceSensorData()) ;
+
+BarGraph *irGraph = new BarGraph(0,40,200,20,0,40,mlx90614Sensor->getTempSensorData()) ;
+Text *irText = new Text(210,55, "%.1lf", WHITE, BLACK, 2 ,mlx90614Sensor->getTempSensorData()) ;
+
+
+UIComponent *componentListPage1[] = {distGraph, irGraph, distText, irText} ;
+
+Page *firstPage = new BlankPage() ;
+Page *pageList[] = {firstPage} ;
+
+void initPages()
+{
+
+  firstPage->setComponents(componentListPage1, sizeof(componentListPage1) / sizeof(UIComponent)) ;
+}
+
+
+
 void displayUI()
 {
-  GO.lcd.clear();
+  firstPage->draw() ;
+/*
   //GO.lcd.fillRect(0, 80, 200, 50, ILI9341_BLACK);
   GO.lcd.setCursor(0, 0);
   GO.lcd.printf("dist : %.1f\n", distance);
@@ -64,7 +87,7 @@ void displayUI()
   GO.lcd.printf("IR : %.1f\n", infrared);
   GO.lcd.printf("CO2 : %.1f  VOC: %.1f\n", co2, voc);
   GO.lcd.printf("gf X: %.1f Y: %.1f Z: %.1f\n", gfX, gfY, gfZ);
-
+*/
 
 }
 
@@ -74,16 +97,17 @@ void setup()
   GO.begin();
   delay(200);
 
-
-
   Serial.println("Boot");
   GO.Speaker.setVolume(11);
 
   GO.lcd.setTextSize(2);
   GO.lcd.setTextColor(WHITE,BLACK);
 
+  initPages() ;
+  firstPage->init() ;
 
-  GO.lcd.clear();
+
+//  GO.lcd.clear();
 
   Wire.setClock(50000)  ;
   Wire.begin(SDA, SCK);
@@ -154,7 +178,7 @@ void setup()
   }
 
 
-  delay(200) ;
+  delay(100) ;
 
 }
 
@@ -162,78 +186,9 @@ void loop()
 {
   for ( int i = 0 ; i < (sizeof ( sensorlist) / sizeof (Sensor)) ; ++i)
   {
-    Serial.printf("Update Sensor %d\n", i) ;
     sensorlist[i]->update() ;
-    Serial.printf("Update Sensor %d DONE\n", i) ;
-
   }
-
-  Serial.println(F("Read Dist"));
-
-  distance = vl53l0xSensor->getDistanceSensorData()->getValue();
-  delay(20) ;
-  /*
-  luxR = RGBWSensor.getRed();
-
-  luxG = RGBWSensor.getGreen();
-
-  luxB = RGBWSensor.getBlue();
-
-  luxW = RGBWSensor.getWhite();
-
-  luxCCT = RGBWSensor.getCCT();
-
-  luxAMB = RGBWSensor.getAmbientLight();
-  */
-  delay(20) ;
-
-  Serial.println(F("Read BME280"));
-
-  humidity =  bmeSensor->getTempSensorData()->getValue();
-  ambientTemperature = bmeSensor->getHumSensorData()->getValue();
-  pressure = bmeSensor->getPressSensorData()->getValue() / 100.0F ;
-
-  delay(20) ;
-
-  Serial.println(F("Read UV"));
-
-  uvA = veml6075Sensor->getUVASensorData()->getValue();
-  uvB = veml6075Sensor->getUVBSensorData()->getValue();
-  uvIndex = veml6075Sensor->getIndexSensorData()->getValue();
-
-  delay(20) ;
-
-  Serial.println(F("Read VOC"));
-  co2 = ccs811Sensor->getCO2SensorData()->getValue();
-  voc =ccs811Sensor->getVOCSensorData()->getValue();
-
-  delay(20) ;
-  Serial.println(F("Read IR"));
-
-  infrared = mlx90614Sensor->getTempSensorData()->getValue() ;
-
-  Serial.println(F("Read Gyro"));
-  if (accel.update()) {
-    gfX = accel.getX() ;
-    gfY = accel.getY() ;
-    gfZ = accel.getZ() ;
-  }
-
-  //  infrared = (float) mlx.readObjectTempC();
-
-  Serial.printf("\n\n");
-
-  Serial.printf("dist : %.1f\n", distance);
-  Serial.printf("lux R/G/B/W/CCT/AMB: %f/%f/%f/%f/%f/%f\n", luxR,luxG, luxB, luxW, luxCCT, luxAMB);
-  Serial.printf("h/t/p : %.1f/%.1f/%.1f\n", humidity, ambientTemperature,pressure );
-  Serial.printf("uvA : %.1f uvB : %.1f uvIndex : %.1f\n", uvA, uvB, uvIndex);
-  Serial.printf("IR : %.1f\n", infrared);
-  Serial.printf("cO2 : %.1f  VOC : %.1f\n", co2, voc);
-  Serial.printf("gf X: %.1f Y: %.1f Z: %.1f\n", gfX, gfY, gfZ);
-
-  Serial.printf("\n\n");
-
 
   displayUI();
-  delay(700) ;
+  delay(100) ;
 }
