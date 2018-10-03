@@ -89,7 +89,11 @@ bool Adafruit_BME280::init()
     }
 
     // check if sensor, i.e. the chip ID is correct
-    if (read8(BME280_REGISTER_CHIPID) != 0x60)
+
+    uint8_t chipID = read8(BME280_REGISTER_CHIPID);
+    Serial.printf("CHIP ID = %d\n", chipID ) ; 
+    
+    if (chipID != 0x60)
         return false;
 
     // reset the device using soft-reset

@@ -13,6 +13,7 @@
 #include "CCS811Sensor.h"
 #include "MLX90614Sensor.h"
 #include "TCS34725Sensor.h"
+#include "I2CSwitchSensor.h"
 #include "Sensor.h"
 
 #include "Pages.h"
@@ -28,8 +29,10 @@ CCS811Sensor *ccs811Sensor = new CCS811Sensor() ;
 MLX90614Sensor *mlx90614Sensor = new MLX90614Sensor() ;
 TCS34725Sensor *tcs34725Sensor = new TCS34725Sensor() ;
 VEML6040Sensor *veml6040Sensor = new VEML6040Sensor() ;
+I2CSWITCHSensor *channel0Sensor = new I2CSWITCHSensor(0) ;
+I2CSWITCHSensor *channel1Sensor = new I2CSWITCHSensor(1) ;
 
-Sensor *sensorlist[] = { bmeSensor, veml6040Sensor};
+Sensor *sensorlist[] = { channel1Sensor, veml6040Sensor, bmeSensor, channel0Sensor, veml6075Sensor};
 
 AmbientPage *ambientPage = new AmbientPage() ;
 LightPage *lightPage = new LightPage() ;
@@ -80,7 +83,7 @@ void setup()
 
   delay(1000);
 
-  Wire.setClock(50000)  ;
+  Wire.setClock(100000)  ;
   Wire.begin(SDA, SCK);
 
   delay(40) ;

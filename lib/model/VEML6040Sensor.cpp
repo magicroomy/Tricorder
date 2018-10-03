@@ -21,8 +21,6 @@ void VEML6040Sensor::update(void) {
   uint16_t blueF = RGBWSensor->getBlue();
 
 
-  Serial.printf("R %d  G %d  B %d\n", redF, greenF, blueF) ;
-
   double sum = ((double)redF) + ((double)greenF) +((double) blueF);
   double r = (redF / sum * 100);
   double g = (greenF / sum * 100);

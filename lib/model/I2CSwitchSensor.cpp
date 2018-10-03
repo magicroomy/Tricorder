@@ -13,6 +13,7 @@ void I2CSWITCHSensor::begin()
   if ( error == 0 )
   {
     isOK = true  ;
+		selectChannel(channel) ;
   }
   else
   {
