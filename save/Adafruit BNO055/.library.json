@@ -1,0 +1,46 @@
+{
+    "description": "Library for the Adafruit BNO055 Absolute Orientation Sensor.", 
+    "repository": {
+        "url": "https://github.com/adafruit/Adafruit_BNO055", 
+        "type": "git"
+    }, 
+    "platforms": [
+        "atmelavr", 
+        "atmelsam", 
+        "espressif8266", 
+        "intel_arc32", 
+        "microchippic32", 
+        "nordicnrf51", 
+        "teensy", 
+        "timsp430"
+    ], 
+    "export": {
+        "exclude": [
+            "extras", 
+            "docs", 
+            "tests", 
+            "test", 
+            "*.doxyfile", 
+            "*.pdf"
+        ], 
+        "include": null
+    }, 
+    "authors": [
+        {
+            "maintainer": true, 
+            "name": "Adafruit", 
+            "url": null, 
+            "email": "info@adafruit.com"
+        }
+    ], 
+    "keywords": [
+        "sensors"
+    ], 
+    "id": 506, 
+    "name": "Adafruit BNO055", 
+    "frameworks": [
+        "arduino"
+    ], 
+    "version": "1.1.6", 
+    "homepage": null
+}

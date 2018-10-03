@@ -32,7 +32,7 @@ VEML6040Sensor *veml6040Sensor = new VEML6040Sensor() ;
 I2CSWITCHSensor *channel0Sensor = new I2CSWITCHSensor(0) ;
 I2CSWITCHSensor *channel1Sensor = new I2CSWITCHSensor(1) ;
 
-Sensor *sensorlist[] = { channel1Sensor, veml6040Sensor, bmeSensor, channel0Sensor, veml6075Sensor};
+Sensor *sensorlist[] = { channel1Sensor, vl53l0xSensor, bmeSensor, veml6075Sensor, mlx90614Sensor, channel0Sensor, veml6040Sensor, ccs811Sensor};
 
 AmbientPage *ambientPage = new AmbientPage() ;
 LightPage *lightPage = new LightPage() ;
