@@ -1,0 +1,10 @@
+0x10	VEML6075   (UV)
+0x10	VEML6040   (LIGHT)
+0x29	VL53LOX    (Dist)
+0x5A	IR MLX     (IR)
+0x5B	CCS811     (CO2/VOC)
+0x77	BME280     (TEMP/PRESS/HUM)
+0x28	BNO055     (Position)
+0x04    Mics       (Gases)
+0x29	TCS        (LIGHT)
+0x70    1/8 Switch

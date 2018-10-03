@@ -1,6 +1,6 @@
-#include "Sensor.h"
+//#include "Sensor.h"
 #include "CCS811Sensor.h"
-#include "Adafruit_CCS811.h"
+//#include "Adafruit_CCS811.h"
 
 CCS811Sensor::CCS811Sensor()
 {

@@ -74,5 +74,5 @@ Text::Text(int x, int y, char *format, uint16_t fgcolor, uint16_t bgcolor, uint8
   this->textSize = textSize ;
   this->sensorData = data ;
   this->charHeight= 8 * textSize ;
-  this->charWidth= 16 * textSize ;
+  this->charWidth= 8 * textSize ;
 }

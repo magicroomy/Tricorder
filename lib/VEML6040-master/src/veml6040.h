@@ -27,6 +27,8 @@ SOFTWARE.
 #ifndef VEML6040_H
 #define VEML6040_H
 
+#include <stdint.h>
+
 // VEML6040 I2C ADDRESS
 
 #define VEML6040_I2C_ADDRESS   0x10

@@ -25,7 +25,7 @@ void BME280Sensor::update()
 
     tempData->setValue(bme->readTemperature()) ;
     humData->setValue(bme->readHumidity()) ;
-    pressData->setValue(bme->readPressure()) ;
+    pressData->setValue(bme->readPressure()/100) ;
   }
 }
 
