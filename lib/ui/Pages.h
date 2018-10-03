@@ -69,5 +69,39 @@ class LightPage : public Page  {
 };
 
 
+class GasesPage : public Page  {
+
+    public:
+      virtual void init() ;
+      virtual void draw() ;
+
+      void setSensorData(SensorData *nh3Data ,
+      SensorData *coData ,
+      SensorData *no2Data ,
+      SensorData *c3h8Data ,
+      SensorData *c4h10Data ,
+      SensorData *ch4Data ,
+      SensorData *h2Data ,
+      SensorData *c2h5ohData ,
+      SensorData *co2Data ,
+      SensorData *vocData 
+                  ) ;
+    private:
+      SensorData *nh3Data ;
+      SensorData *coData ;
+      SensorData *no2Data ;
+      SensorData *c3h8Data ;
+      SensorData *c4h10Data ;
+      SensorData *ch4Data ;
+      SensorData *h2Data ;
+      SensorData *c2h5ohData ;
+      SensorData *co2Data ;
+      SensorData *vocData ;
+
+      UIComponent **components ;
+
+};
+
+
 
 #endif

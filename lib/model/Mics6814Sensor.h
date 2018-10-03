@@ -17,7 +17,7 @@ class Mics6814Sensor : public Sensor {
       SensorData* getC4H10SensorData() ;
       SensorData* getCH4SensorData() ;
       SensorData* getH2SensorData() ;
-      SensorData* geC2H5OHSensorData() ;
+      SensorData* getC2H5OHSensorData() ;
 
 
     private:

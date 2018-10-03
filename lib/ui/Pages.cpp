@@ -101,3 +101,63 @@ void LightPage::draw()
     components[i]->draw() ;
   }
 }
+
+// -------------------------------------------
+
+
+void GasesPage::init()
+{
+  Serial.println("INIT Gases PAGE") ;
+   GO.lcd.drawJpgFile(SPIFFS, "/Gases.jpg", 0, 0, 320, 240, 0, 0, JPEG_DIV_NONE) ;
+}
+
+void GasesPage::setSensorData(
+      SensorData *nh3Data ,
+      SensorData *coData ,
+      SensorData *no2Data ,
+      SensorData *c3h8Data ,
+      SensorData *c4h10Data ,
+      SensorData *ch4Data ,
+      SensorData *h2Data ,
+      SensorData *c2h5ohData ,
+      SensorData *co2Data ,
+      SensorData *vocData 
+)
+{
+  this->nh3Data = nh3Data;
+  this->coData = coData;
+  this->no2Data = no2Data;
+  this->c3h8Data = c3h8Data;
+  this->c4h10Data = c4h10Data;
+  this->ch4Data = ch4Data;
+  this->h2Data = h2Data;
+  this->c2h5ohData = c2h5ohData;
+  this->co2Data = co2Data;
+  this->vocData = vocData;
+
+  components  = (UIComponent **) malloc(sizeof(UIComponent *) * 10);
+
+  components[0] = new Text(65,30, "%.1lf", RED, BLACK, 2 ,coData) ;
+  components[1] = new Text(65,72, "%.1lf", GREEN, BLACK, 2 ,no2Data) ;
+  components[2] = new Text(65, 112, "%.1lf", BLUE, BLACK, 2 ,nh3Data) ;
+  components[3] = new Text(65,150, "%.1lf", WHITE, BLACK, 2 ,c3h8Data) ;
+  components[4] = new Text(65,190, "%.1lf", YELLOW, BLACK, 2 ,co2Data) ;
+
+  components[5] = new Text(225,30, "%.1lf", RED, BLACK, 2 ,h2Data) ;
+  components[6] = new Text(225,72, "%.1lf", GREEN, BLACK, 2 ,c2h5ohData) ;
+  components[7] = new Text(225, 112, "%.1lf", BLUE, BLACK, 2 ,ch4Data) ;
+  components[8] = new Text(225,150, "%.1lf", WHITE, BLACK, 2 ,c4h10Data) ;
+  components[9] = new Text(225,190, "%.1lf", YELLOW, BLACK, 2 ,vocData) ;
+
+
+
+}
+
+void GasesPage::draw()
+{
+  for ( int i = 0 ; i < 10 ; ++i )
+  {
+    components[i]->draw() ;
+  }
+}
+

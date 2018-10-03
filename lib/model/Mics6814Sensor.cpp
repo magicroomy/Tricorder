@@ -65,7 +65,7 @@ SensorData* Mics6814Sensor::getH2SensorData()
 {
   return h2Data ;
 }
-SensorData* Mics6814Sensor::geC2H5OHSensorData()
+SensorData* Mics6814Sensor::getC2H5OHSensorData()
 {
   return c2h5ohData ;
 }

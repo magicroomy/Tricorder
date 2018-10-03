@@ -14,6 +14,7 @@
 #include "MLX90614Sensor.h"
 #include "TCS34725Sensor.h"
 #include "I2CSwitchSensor.h"
+#include "Mics6814Sensor.h"
 #include "Sensor.h"
 
 #include "Pages.h"
@@ -29,18 +30,20 @@ CCS811Sensor *ccs811Sensor = new CCS811Sensor() ;
 MLX90614Sensor *mlx90614Sensor = new MLX90614Sensor() ;
 TCS34725Sensor *tcs34725Sensor = new TCS34725Sensor() ;
 VEML6040Sensor *veml6040Sensor = new VEML6040Sensor() ;
+Mics6814Sensor *mics6814Sensor = new Mics6814Sensor() ;
 I2CSWITCHSensor *channel0Sensor = new I2CSWITCHSensor(0) ;
 I2CSWITCHSensor *channel1Sensor = new I2CSWITCHSensor(1) ;
 
-Sensor *sensorlist[] = { channel1Sensor, vl53l0xSensor, bmeSensor, veml6075Sensor, mlx90614Sensor, channel0Sensor, veml6040Sensor, ccs811Sensor};
+Sensor *sensorlist[] = { channel1Sensor, vl53l0xSensor, bmeSensor, veml6075Sensor, mlx90614Sensor, channel0Sensor, veml6040Sensor, ccs811Sensor, mics6814Sensor};
 
 AmbientPage *ambientPage = new AmbientPage() ;
 LightPage *lightPage = new LightPage() ;
 BlankPage *blankPage = new BlankPage() ;
-Page *pageList[] = {blankPage, ambientPage, lightPage} ;
+GasesPage *gasesPage = new GasesPage() ;
+Page *pageList[] = {blankPage, ambientPage, lightPage, gasesPage} ;
 
 int currentPage = 0 ;
-int pages = 3 ;
+int pages = 4 ;
 
 void initPages()
 {
@@ -55,6 +58,19 @@ void initPages()
   veml6040Sensor->getBlueSensorData(),
   veml6040Sensor->getLuxSensorData(),
   veml6040Sensor->getColorTempSensorData()) ;
+
+  gasesPage->setSensorData(mics6814Sensor->getNH3SensorData(),
+  mics6814Sensor->getCOSensorData(),
+  mics6814Sensor->getNO2SensorData(),
+  mics6814Sensor->getC3H8SensorData(),
+  mics6814Sensor->getC4H10SensorData(),
+  mics6814Sensor->getCH4SensorData(),
+  mics6814Sensor->getH2SensorData(),
+  mics6814Sensor->getC2H5OHSensorData(),
+  ccs811Sensor->getCO2SensorData(),
+  ccs811Sensor->getVOCSensorData()
+
+  ) ;
 
 }
 void displayUI()
