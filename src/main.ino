@@ -15,6 +15,7 @@
 #include "TCS34725Sensor.h"
 #include "I2CSwitchSensor.h"
 #include "Mics6814Sensor.h"
+#include "BNO055Sensor.h"
 #include "Sensor.h"
 
 #include "Pages.h"
@@ -33,16 +34,18 @@ VEML6040Sensor *veml6040Sensor = new VEML6040Sensor() ;
 Mics6814Sensor *mics6814Sensor = new Mics6814Sensor() ;
 I2CSWITCHSensor *channel0Sensor = new I2CSWITCHSensor(0) ;
 I2CSWITCHSensor *channel1Sensor = new I2CSWITCHSensor(1) ;
+BNO055Sensor *bno055Sensor = new BNO055Sensor() ;
 
-Sensor *sensorlist[] = { channel1Sensor, vl53l0xSensor, bmeSensor, veml6075Sensor, mlx90614Sensor, channel0Sensor, veml6040Sensor, ccs811Sensor, mics6814Sensor};
+Sensor *sensorlist[] = { channel1Sensor, vl53l0xSensor, bmeSensor, veml6075Sensor, mlx90614Sensor, channel0Sensor, veml6040Sensor, ccs811Sensor, mics6814Sensor, bno055Sensor};
 
 AmbientPage *ambientPage = new AmbientPage() ;
 LightPage *lightPage = new LightPage() ;
 BlankPage *blankPage = new BlankPage() ;
 GasesPage *gasesPage = new GasesPage() ;
-Page *pageList[] = {blankPage, ambientPage, lightPage, gasesPage} ;
+ExamplePage *examplePage = new ExamplePage() ;
+Page *pageList[] = {ambientPage, lightPage, gasesPage, examplePage} ;
 
-int currentPage = 0 ;
+int currentPage = -1 ;
 int pages = 4 ;
 
 void initPages()
@@ -71,11 +74,25 @@ void initPages()
   ccs811Sensor->getVOCSensorData()
 
   ) ;
+  examplePage->setSensorData(
+    mlx90614Sensor->getTempSensorData(), 
+    vl53l0xSensor->getDistanceSensorData(),
+    bno055Sensor->getRotationSensorData(), 
+    bno055Sensor->getRollSensorData(),
+    bno055Sensor->getPitchSensorData(),
+    bno055Sensor->getAccelXSensorData(), 
+    bno055Sensor->getAccelYSensorData(),
+    bno055Sensor->getAccelZSensorData()
+    
+     ) ;
 
 }
 void displayUI()
 {
-  pageList[currentPage]->draw() ;
+  if ( currentPage >= 0)
+  {
+    pageList[currentPage]->draw() ;
+  }
 }
 
 void setup()
@@ -97,14 +114,15 @@ void setup()
 
   GO.lcd.drawJpgFile(SPIFFS, "/Init.jpg", 0, 0, 320, 240, 0, 0, JPEG_DIV_NONE) ;
 
-  delay(1000);
+  GO.lcd.setTextSize(3);
+  GO.lcd.setTextColor(CYAN,BLACK);
+  GO.lcd.drawString("INITIALIZING", 50, 100) ;
 
-  Wire.setClock(100000)  ;
+//  Wire.setClock(100000)  ;
   Wire.begin(SDA, SCK);
 
   delay(40) ;
   Serial.println("INIT Sensors") ;
-
 
   for ( int i = 0 ; i < (sizeof ( sensorlist) / sizeof (Sensor)) ; ++i)
   {
@@ -117,7 +135,16 @@ void setup()
   delay(40) ;
 
   initPages() ;
-  pageList[currentPage]->init() ;
+
+
+  GO.lcd.drawJpgFile(SPIFFS, "/Init.jpg", 0, 0, 320, 240, 0, 0, JPEG_DIV_NONE) ;
+
+  GO.lcd.setTextSize(3);
+  GO.lcd.setTextColor(CYAN,BLACK);
+  GO.lcd.drawString("INIT COMPLETE", 50, 100) ;
+
+
+//  pageList[currentPage]->init() ;
 }
 void loop()
 {
@@ -146,7 +173,7 @@ void loop()
   if ( GO.BtnB.isPressed() == 1)
   {
     currentPage-- ;
-    if (currentPage == -1)
+    if (currentPage < 0)
     {
       currentPage = pages-1 ;
     }

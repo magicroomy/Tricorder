@@ -55,7 +55,8 @@ Adafruit_BNO055::Adafruit_BNO055(int32_t sensorID, uint8_t address)
 bool Adafruit_BNO055::begin(adafruit_bno055_opmode_t mode)
 {
   /* Enable I2C */
-  Wire.begin();
+
+  Serial.printf("BNE MODE MODE %d\n", mode) ;
 
   // BNO055 clock stretches for 500us or more!
 #ifdef ESP8266
@@ -660,6 +661,7 @@ byte Adafruit_BNO055::read8(adafruit_bno055_reg_t reg )
   #endif
   Wire.endTransmission();
   Wire.requestFrom(_address, (byte)1);
+  while ( Wire.available() != 1 ) ;
   #if ARDUINO >= 100
     value = Wire.read();
   #else
@@ -684,6 +686,7 @@ bool Adafruit_BNO055::readLen(adafruit_bno055_reg_t reg, byte * buffer, uint8_t 
   #endif
   Wire.endTransmission();
   Wire.requestFrom(_address, (byte)len);
+  while ( Wire.available() != len ) ;
 
   for (uint8_t i = 0; i < len; i++)
   {

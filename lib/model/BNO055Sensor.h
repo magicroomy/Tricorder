@@ -5,7 +5,6 @@
 #include <utility/imumaths.h>
 #include "Sensor.h"
 
-#define BNO055_SAMPLERATE_DELAY_MS (100)
 
 class BNO055Sensor : public Sensor {
 
@@ -13,12 +12,24 @@ class BNO055Sensor : public Sensor {
       BNO055Sensor() ;
       virtual void begin();
       virtual void update();
-      SensorData* getCO2SensorData() ;
-      SensorData* getVOCSensorData() ;
+      SensorData* getRotationSensorData() ;
+      SensorData* getRollSensorData() ;
+      SensorData* getPitchSensorData() ;
+      SensorData* getAccelXSensorData() ;
+      SensorData* getAccelYSensorData() ;
+      SensorData* getAccelZSensorData() ;
+
+
     private:
-      Adafruit_BNO055 bno ;
-      SensorData *co2Data ;
-      SensorData *vocData ;
+      Adafruit_BNO055 *bno ;
+      
+      SensorData *rotationData ;
+      SensorData *rollData ;
+      SensorData *pitchData ;
+      SensorData *accelXData ;
+      SensorData *accelYData ;
+      SensorData *accelZData ;
+
       bool isOK = false ;
 };
 

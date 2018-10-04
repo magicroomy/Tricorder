@@ -2,22 +2,34 @@
 
 BNO055Sensor::BNO055Sensor()
 {
-   bno = Adafruit_BNO055(55);
-  co2Data = new SensorData();
-  vocData = new SensorData();
+  bno = new Adafruit_BNO055(55);
+  rotationData = new SensorData();
+  rollData = new SensorData();
+  pitchData = new SensorData();
+  accelXData = new SensorData();
+  accelYData = new SensorData();
+  accelZData = new SensorData();
 
 }
 
 void BNO055Sensor::begin()
 {
-  isOK = bno.begin() ;
+  
+  isOK = bno->begin(Adafruit_BNO055::adafruit_bno055_opmode_t::OPERATION_MODE_NDOF) ;
+
+  
 
   if ( !isOK )
   {
     /* There was a problem detecting the BNO055 ... check your connections */
     Serial.print("Ooops, no BNO055 detected ... Check your wiring or I2C ADDR!");
   }
+  else{
+    delay(1000); // FUNDAMENTAL !!!
+    /* Use external crystal for better accuracy */
+    bno->setExtCrystalUse(true);
 
+  }
 }
 
 void BNO055Sensor::update()
@@ -25,19 +37,53 @@ void BNO055Sensor::update()
   if ( isOK )
   {
     
-    sensors_event_t event;
-    bno.getEvent(&event);
+    imu::Vector<3> orientation = bno->getVector(Adafruit_BNO055::adafruit_vector_type_t::VECTOR_EULER) ;
+    imu::Vector<3> accel = bno->getVector(Adafruit_BNO055::adafruit_vector_type_t::VECTOR_ACCELEROMETER) ;
+
+    rotationData->setValue(orientation.x()) ;
+    rollData->setValue(orientation.y()) ;
+    pitchData->setValue(orientation.z()) ;
+
+    accelXData->setValue(accel.x()) ;
+    accelYData->setValue(accel.y()) ;
+    accelZData->setValue(accel.z()) ;
 
 
   }
 }
 
-SensorData* BNO055Sensor::getCO2SensorData()
+SensorData* BNO055Sensor::getRotationSensorData()
 {
-  return co2Data ;
+  return rotationData ;
 }
 
-SensorData* BNO055Sensor::getVOCSensorData()
+SensorData* BNO055Sensor::getRollSensorData()
 {
-  return vocData ;
+  return rollData ;
 }
+
+SensorData* BNO055Sensor::getPitchSensorData()
+{
+  return pitchData ;
+}
+
+SensorData* BNO055Sensor::getAccelXSensorData()
+{
+  return accelXData ;
+}
+
+SensorData* BNO055Sensor::getAccelYSensorData()
+{
+  return accelYData ;
+}
+
+SensorData* BNO055Sensor::getAccelZSensorData()
+{
+  return accelZData ;
+}
+
+
+
+
+
+

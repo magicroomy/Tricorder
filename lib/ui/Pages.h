@@ -104,4 +104,38 @@ class GasesPage : public Page  {
 
 
 
+
+
+class ExamplePage : public Page  {
+
+    public:
+      virtual void init() ;
+      virtual void draw() ;
+
+      void setSensorData(SensorData *irTemp ,
+      SensorData *distData ,
+      SensorData *rotationData ,
+      SensorData *pitchData ,
+      SensorData *rollData ,
+      SensorData *accXData ,
+      SensorData *accYData ,
+      SensorData *accZData 
+                  ) ;
+    private:
+      SensorData *irTemp ;
+      SensorData *distData ;
+      SensorData *rotationData ;
+      SensorData *pitchData ;
+      SensorData *rollData ;
+      SensorData *accXData ;
+      SensorData *accYData ;
+      SensorData *accZData ;
+
+      UIComponent **components ;
+
+};
+
+
+
+
 #endif

@@ -28,7 +28,6 @@ void I2CSWITCHSensor::update()
   if ( isOK )
   {
     selectChannel(channel) ;
-    Serial.printf("Switch to Channel %d\n", channel) ;
   }
 }
 
