@@ -14,29 +14,38 @@ void BarGraph::draw()
 
   if ( lastWidth < 0)
   {
-    GO.lcd.fillRect(x,y,newWidth, height, TFT_BLUE) ;
+    GO.lcd.fillRect(x,y,newWidth, height, fgcolor) ;
   }
   else
   {
     if ( lastWidth < newWidth )
     {
-      GO.lcd.fillRect(x+lastWidth,y,newWidth-lastWidth, height, TFT_BLUE) ;
+      GO.lcd.fillRect(x+lastWidth,y,newWidth-lastWidth, height, fgcolor) ;
     }
     else if ( lastWidth > newWidth )
     {
-      GO.lcd.fillRect(x+newWidth,y,lastWidth-newWidth, height, TFT_BLACK) ;
+      GO.lcd.fillRect(x+newWidth,y,lastWidth-newWidth, height, bgcolor) ;
 
     }
   }
   lastWidth = newWidth ;
 }
 
-BarGraph::BarGraph(int x, int y, int width, int height, double min, double max, SensorData *data)
+ void BarGraph::reset() 
+ {
+   lastWidth = -1 ;
+   GO.lcd.fillRect(x,y,width, height, bgcolor) ;
+ }
+
+
+BarGraph::BarGraph(int x, int y, int width, int height, double min, double max, uint16_t fgcolor, uint16_t bgcolor, SensorData *data)
 {
   this->x = x ;
   this->y = y ;
   this->width = width ;
   this->height = height ;
+   this->fgcolor = fgcolor ;
+  this->bgcolor = bgcolor ;
   this->min = min ;
   this->max = max ;
 
@@ -58,11 +67,15 @@ void Text::draw()
     }
     lastTextLength = strlen(formatted) ;
     GO.lcd.setTextColor(fgcolor,bgcolor);
+    GO.lcd.setTextSize(textSize);
     GO.lcd.drawString(formatted, x,y) ;
 
 
 }
+ void Text::reset() 
+ {
 
+ }
 
 Text::Text(int x, int y, char *format, uint16_t fgcolor, uint16_t bgcolor, uint8_t textSize, SensorData *data)
 {

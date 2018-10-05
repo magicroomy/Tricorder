@@ -43,10 +43,12 @@ LightPage *lightPage = new LightPage() ;
 BlankPage *blankPage = new BlankPage() ;
 GasesPage *gasesPage = new GasesPage() ;
 ExamplePage *examplePage = new ExamplePage() ;
-Page *pageList[] = {ambientPage, lightPage, gasesPage, examplePage} ;
+DistancePage *distancePage = new DistancePage() ;
+TemperaturePage *temperaturePage = new TemperaturePage() ;
+Page *pageList[] = {ambientPage, lightPage, gasesPage, distancePage,temperaturePage, examplePage} ;
 
 int currentPage = -1 ;
-int pages = 4 ;
+int pages = 6 ;
 
 void initPages()
 {
@@ -74,6 +76,10 @@ void initPages()
   ccs811Sensor->getVOCSensorData()
 
   ) ;
+
+  distancePage->setSensorData(vl53l0xSensor->getDistanceSensorData()) ;
+  temperaturePage->setSensorData(mlx90614Sensor->getTempSensorData()) ;
+
   examplePage->setSensorData(
     mlx90614Sensor->getTempSensorData(), 
     vl53l0xSensor->getDistanceSensorData(),
@@ -103,6 +109,7 @@ void setup()
 
   Serial.println("Boot");
   GO.Speaker.setVolume(11);
+  GO.Speaker.update();
 
   GO.lcd.setTextSize(2);
   GO.lcd.setTextColor(WHITE,BLACK);
@@ -153,8 +160,6 @@ void loop()
   {
     sensorlist[i]->update() ;
   }
-
-  GO.Speaker.update();
 
   GO.BtnB.read() ;
   GO.BtnA.read() ;

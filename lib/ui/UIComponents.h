@@ -7,16 +7,20 @@
 class UIComponent  {
     public:
       virtual void draw() = 0;
+      virtual void reset() = 0;
+     
     private:
 };
 
 class BarGraph : public UIComponent  {
 
     public:
-      BarGraph(int x, int y, int width, int height, double min, double max, SensorData *data) ;
+      BarGraph(int x, int y, int width, int height, double min, double max, uint16_t fgcolor, uint16_t bgcolor, SensorData *data) ;
       virtual void draw() ;
+      virtual void reset() ;
     private:
       int x, y, width, height;
+      uint16_t fgcolor, bgcolor ;
       double min, max ;
       int lastWidth = -1 ;
       double factorPixToVal;
@@ -28,6 +32,8 @@ class Text : public UIComponent  {
     public:
       Text(int x, int y, char *format, uint16_t fgcolor, uint16_t bgcolor, uint8_t textSize, SensorData *data) ;
       virtual void draw() ;
+      virtual void reset() ;
+
     private:
       int x, y;
       char *format ;

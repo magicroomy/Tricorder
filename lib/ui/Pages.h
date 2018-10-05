@@ -106,6 +106,39 @@ class GasesPage : public Page  {
 
 
 
+
+class DistancePage : public Page  {
+
+    public:
+      virtual void init() ;
+      virtual void draw() ;
+
+      void setSensorData(SensorData *distanceData ) ;
+    private:
+      SensorData *distanceData ;
+
+      UIComponent **components ;
+
+};
+
+class TemperaturePage : public Page  {
+
+    public:
+      virtual void init() ;
+      virtual void draw() ;
+
+      void setSensorData(SensorData *temperatureData ) ;
+    private:
+      SensorData *temperatureData ;
+
+      UIComponent **components ;
+
+};
+
+
+
+
+
 class ExamplePage : public Page  {
 
     public:
