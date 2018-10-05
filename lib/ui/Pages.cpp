@@ -14,10 +14,6 @@ void BlankPage::init()
 {
   Serial.println("INIT BLANK PAGE");
   GO.lcd.drawJpgFile(SPIFFS, "/Init.jpg", 0, 0, 320, 240, 0, 0, JPEG_DIV_NONE);
-  for (int i = 0; i < 5; ++i)
-  {
-    components[i]->reset();
-  }
 }
 
 void BlankPage::draw()
@@ -116,7 +112,7 @@ void GasesPage::init()
 {
   Serial.println("INIT Gases PAGE");
   GO.lcd.drawJpgFile(SPIFFS, "/Gases.jpg", 0, 0, 320, 240, 0, 0, JPEG_DIV_NONE);
-  for (int i = 0; i < 5; ++i)
+  for (int i = 0; i < 8; ++i)
   {
     components[i]->reset();
   }
@@ -174,7 +170,7 @@ void DistancePage::init()
 {
   Serial.println("INIT Distance PAGE");
   GO.lcd.drawJpgFile(SPIFFS, "/Distance.jpg", 0, 0, 320, 240, 0, 0, JPEG_DIV_NONE);
-  for (int i = 0; i < 5; ++i)
+  for (int i = 0; i < 2; ++i)
   {
     components[i]->reset();
   }
@@ -206,7 +202,7 @@ void TemperaturePage::init()
 {
   Serial.println("INIT Temperature PAGE");
   GO.lcd.drawJpgFile(SPIFFS, "/Temperature.jpg", 0, 0, 320, 240, 0, 0, JPEG_DIV_NONE);
-  for (int i = 0; i < 5; ++i)
+  for (int i = 0; i < 2; ++i)
   {
     components[i]->reset();
   }
