@@ -45,7 +45,8 @@ GasesPage *gasesPage = new GasesPage() ;
 ExamplePage *examplePage = new ExamplePage() ;
 DistancePage *distancePage = new DistancePage() ;
 TemperaturePage *temperaturePage = new TemperaturePage() ;
-Page *pageList[] = {ambientPage, lightPage, gasesPage, distancePage,temperaturePage, examplePage} ;
+OrientationPage *orientationPage = new OrientationPage() ;
+Page *pageList[] = {ambientPage, lightPage, gasesPage, distancePage,temperaturePage, orientationPage} ;
 
 int currentPage = -1 ;
 int pages = 6 ;
@@ -80,16 +81,10 @@ void initPages()
   distancePage->setSensorData(vl53l0xSensor->getDistanceSensorData()) ;
   temperaturePage->setSensorData(mlx90614Sensor->getTempSensorData()) ;
 
-  examplePage->setSensorData(
-    mlx90614Sensor->getTempSensorData(), 
-    vl53l0xSensor->getDistanceSensorData(),
+  orientationPage->setSensorData(
     bno055Sensor->getRotationSensorData(), 
     bno055Sensor->getRollSensorData(),
-    bno055Sensor->getPitchSensorData(),
-    bno055Sensor->getAccelXSensorData(), 
-    bno055Sensor->getAccelYSensorData(),
-    bno055Sensor->getAccelZSensorData()
-    
+    bno055Sensor->getPitchSensorData()
      ) ;
 
 }

@@ -136,6 +136,27 @@ class TemperaturePage : public Page  {
 };
 
 
+class OrientationPage : public Page  {
+
+    public:
+      virtual void init() ;
+      virtual void draw() ;
+
+      void setSensorData(SensorData *yawData,SensorData *rollData,SensorData *pitchData ) ;
+    private:
+      SensorData *yawData ;
+      SensorData *rollData ;
+      SensorData *pitchData ;
+      double lastRoll = 0 ;
+      double lastPitch = 0 ;
+
+      Text *rollText ;
+      Text *pitchText ;
+      Text *yawText ;
+
+};
+
+
 
 
 

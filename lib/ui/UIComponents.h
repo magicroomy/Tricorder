@@ -33,6 +33,7 @@ class Text : public UIComponent  {
       Text(int x, int y, char *format, uint16_t fgcolor, uint16_t bgcolor, uint8_t textSize, SensorData *data) ;
       virtual void draw() ;
       virtual void reset() ;
+      void setPosition(int x, int y) ;
 
     private:
       int x, y;

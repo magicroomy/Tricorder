@@ -230,6 +230,77 @@ void TemperaturePage::draw()
 
 // -------------------------------------------
 
+void OrientationPage::init()
+{
+  Serial.println("INIT Orientation PAGE");
+  GO.lcd.drawJpgFile(SPIFFS, "/Orientation.jpg", 0, 0, 320, 240, 0, 0, JPEG_DIV_NONE);
+}
+
+void OrientationPage::setSensorData(SensorData *yawData, SensorData *rollData, SensorData *pitchData)
+{
+  this->yawData = yawData;
+  this->rollData = rollData;
+  this->pitchData = pitchData;
+
+  rollText = new Text(60, 190, "%.1lf", BLUE, BLACK, 2, rollData);
+  pitchText = new Text(60, 190, "%.1lf", BLUE, BLACK, 2, pitchData);
+  yawText = new Text(145, 185, "%.1lf", YELLOW, BLACK, 2, yawData);
+}
+
+void OrientationPage::draw()
+{
+  double pitch = pitchData->getValue();
+  double roll = rollData->getValue();
+  
+  if (pitch > 0)
+  {
+    pitchText->setPosition(250, 42);
+  }
+  else
+  {
+    pitchText->setPosition(250, 150);
+  }
+
+  if (roll > 0)
+  {
+    rollText->setPosition(10, 42);
+  }
+  else
+  {
+    rollText->setPosition(10, 150);
+  }
+
+  if ( lastRoll < 0 && roll > 0)
+  {
+    GO.lcd.fillRect(10,150, 57, 16, BLACK) ;
+  }
+
+  if ( lastRoll > 0 && roll < 0)
+  {
+    GO.lcd.fillRect(10,42, 57, 16, BLACK) ;
+  }
+
+
+  if ( lastPitch < 0 && pitch > 0)
+  {
+    GO.lcd.fillRect(250,150, 57, 16, BLACK) ;
+  }
+
+  if ( lastPitch > 0 && pitch < 0)
+  {
+    GO.lcd.fillRect(250,42, 57, 16, BLACK) ;
+  }
+
+  lastPitch = pitch ;
+  lastRoll = roll ;
+
+  pitchText->draw();
+  rollText->draw();
+  yawText->draw();
+}
+
+// -------------------------------------------
+
 void ExamplePage::init()
 {
   Serial.println("INIT Gases PAGE");
