@@ -8,9 +8,9 @@ class Page  {
     public:
       virtual void draw() = 0;
       virtual void init() = 0 ;
+      virtual void buttonsPressed( bool menu, bool volume, bool select, bool start) {} ;
     private:
 };
-
 
 class BlankPage : public Page  {
 
@@ -156,40 +156,32 @@ class OrientationPage : public Page  {
 
 };
 
-
-
-
-
-class ExamplePage : public Page  {
+class AccelerationPage : public Page  {
 
     public:
       virtual void init() ;
       virtual void draw() ;
 
-      void setSensorData(SensorData *irTemp ,
-      SensorData *distData ,
-      SensorData *rotationData ,
-      SensorData *pitchData ,
-      SensorData *rollData ,
-      SensorData *accXData ,
-      SensorData *accYData ,
-      SensorData *accZData 
+      void setSensorData( SensorData *accelX ,
+                          SensorData *accelY ,
+                          SensorData *accelZ 
                   ) ;
-    private:
-      SensorData *irTemp ;
-      SensorData *distData ;
-      SensorData *rotationData ;
-      SensorData *pitchData ;
-      SensorData *rollData ;
-      SensorData *accXData ;
-      SensorData *accYData ;
-      SensorData *accZData ;
 
-      UIComponent **components ;
+    private:
+      SensorData *accelX ;
+      SensorData *accelY ;
+      SensorData *accelZ ;
+      SensorData *accelXMax ;
+      SensorData *accelYMax ;
+      SensorData *accelZMax ;
+
+      Text *accelXText ;
+      Text *accelYText ;
+      Text *accelZText ;
+      Text *accelXMaxText ;
+      Text *accelYMaxText ;
+      Text *accelZMaxText ;
 
 };
-
-
-
 
 #endif

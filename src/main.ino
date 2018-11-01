@@ -42,14 +42,14 @@ AmbientPage *ambientPage = new AmbientPage();
 LightPage *lightPage = new LightPage();
 BlankPage *blankPage = new BlankPage();
 GasesPage *gasesPage = new GasesPage();
-ExamplePage *examplePage = new ExamplePage();
 DistancePage *distancePage = new DistancePage();
 TemperaturePage *temperaturePage = new TemperaturePage();
 OrientationPage *orientationPage = new OrientationPage();
-Page *pageList[] = {ambientPage, lightPage, gasesPage, distancePage, temperaturePage, orientationPage};
+AccelerationPage *accelerationPage = new AccelerationPage();
+Page *pageList[] = {ambientPage, lightPage, gasesPage, distancePage, temperaturePage, orientationPage, accelerationPage};
 
 int currentPage = -1;
-int pages = 6;
+int pages = 7;
 
 void initPages()
 {
@@ -85,6 +85,12 @@ void initPages()
       bno055Sensor->getRotationSensorData(),
       bno055Sensor->getRollSensorData(),
       bno055Sensor->getPitchSensorData());
+
+  accelerationPage->setSensorData( bno055Sensor->getAccelXSensorData(),
+    bno055Sensor->getAccelYSensorData(),
+    bno055Sensor->getAccelZSensorData()
+  ) ;
+
 }
 void displayUI()
 {
@@ -152,6 +158,18 @@ void loop()
 
   GO.BtnB.read();
   GO.BtnA.read();
+  GO.BtnMenu.read();
+  GO.BtnVolume.read();
+  GO.BtnSelect.read();
+  GO.BtnStart.read();
+  GO.JOY_Y.readAxis();
+  GO.JOY_X.readAxis();
+
+  if (currentPage >= 0)
+  {
+    pageList[currentPage]->buttonsPressed(GO.BtnMenu.isPressed(),  GO.BtnVolume.isPressed(), GO.BtnSelect.isPressed(), GO.BtnStart.isPressed())  ;
+  }
+
 
   if (GO.BtnA.isPressed() == 1)
   {

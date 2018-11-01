@@ -299,53 +299,48 @@ void OrientationPage::draw()
   yawText->draw();
 }
 
+
+
 // -------------------------------------------
 
-void ExamplePage::init()
+void AccelerationPage::init()
 {
-  Serial.println("INIT Gases PAGE");
-  GO.lcd.fillRect(0, 0, 320, 240, BLACK);
-  for (int i = 0; i < 5; ++i)
-  {
-    components[i]->reset();
-  }
+  Serial.println("INIT Acceleration PAGE");
+  GO.lcd.drawJpgFile(SPIFFS, "/Acceleration.jpg", 0, 0, 320, 240, 0, 0, JPEG_DIV_NONE);
+
+
+
 }
 
-void ExamplePage::setSensorData(
-    SensorData *irTemp,
-    SensorData *distData,
-    SensorData *rotationData,
-    SensorData *pitchData,
-    SensorData *rollData,
-    SensorData *accXData,
-    SensorData *accYData,
-    SensorData *accZData)
+void AccelerationPage::setSensorData( SensorData *accelX ,
+                          SensorData *accelY ,
+                          SensorData *accelZ )
 {
-  this->irTemp = irTemp;
-  this->distData = distData;
-  this->rotationData = rotationData;
-  this->pitchData = pitchData;
-  this->rollData = rollData;
-  this->accXData = accXData;
-  this->accYData = accYData;
-  this->accZData = accZData;
+  this->accelX = accelX;
+  this->accelY = accelY;
+  this->accelZ = accelZ;
 
-  components = (UIComponent **)malloc(sizeof(UIComponent *) * 8);
+  accelXMax  = new SensorData() ;
+  accelXMax->setValue(0) ;
+  accelYMax  = new SensorData() ;
+  accelYMax->setValue(0) ;
+  accelZMax  = new SensorData() ;
+  accelZMax->setValue(0) ;
 
-  components[0] = new Text(65, 30, "%.1lf", RED, BLACK, 2, irTemp);
-  components[1] = new Text(65, 72, "%.1lf", GREEN, BLACK, 2, distData);
-  components[2] = new Text(65, 112, "%.1lf", BLUE, BLACK, 2, rotationData);
-  components[3] = new Text(65, 150, "%.1lf", WHITE, BLACK, 2, pitchData);
-  components[4] = new Text(65, 190, "%.1lf", YELLOW, BLACK, 2, rollData);
-  components[5] = new Text(225, 112, "%.1lf", BLUE, BLACK, 2, accXData);
-  components[6] = new Text(225, 150, "%.1lf", WHITE, BLACK, 2, accYData);
-  components[7] = new Text(225, 190, "%.1lf", YELLOW, BLACK, 2, accZData);
+  accelXText = new Text(70, 175, "%.1lf", BLACK, GO.lcd.color565(74,233,113), 2, accelX);
+  accelYText = new Text(81, 87, "%.1lf", BLACK, GO.lcd.color565(134,166,223), 2, accelY);
+  accelZText = new Text(207, 51, "%.1lf", BLACK, GO.lcd.color565(141,252,234), 2, accelZ);
+  accelXMaxText = new Text(60, 90, "%.1lf", BLUE, BLACK, 2, accelX);
+  accelYMaxText = new Text(60, 110, "%.1lf", BLUE, BLACK, 2, accelY);
+  accelZMaxText = new Text(145, 130, "%.1lf", YELLOW, BLACK, 2, accelZ);
+  
 }
 
-void ExamplePage::draw()
+void AccelerationPage::draw()
 {
-  for (int i = 0; i < 8; ++i)
-  {
-    components[i]->draw();
-  }
+  accelXText->draw() ;
+  accelYText->draw() ;
+  accelZText->draw() ;
+
+
 }
