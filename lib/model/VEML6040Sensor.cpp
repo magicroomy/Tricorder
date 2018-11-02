@@ -16,12 +16,12 @@ void VEML6040Sensor::update(void) {
   if ( isOK) 
   {
 
-  uint16_t redF = RGBWSensor->getRed();
-  uint16_t greenF = RGBWSensor->getGreen();
-  uint16_t blueF = RGBWSensor->getBlue();
+  double redF = ((double)RGBWSensor->getRed()) /96.0f;
+  double greenF = ((double) RGBWSensor->getGreen()) /74.0f;
+  double blueF = ((double) RGBWSensor->getBlue() ) / 56.0f;
 
 
-  double sum = ((double)redF) + ((double)greenF) +((double) blueF);
+  double sum = redF + greenF+ blueF;
   double r = (redF / sum * 100);
   double g = (greenF / sum * 100);
   double b = (blueF / sum * 100);

@@ -45,7 +45,7 @@ void BNO055Sensor::update()
     pitchData->setValue(orientation.z()) ;
 
     accelXData->setValue(accel.x()/10) ;
-    accelYData->setValue(accel.y()/10) ;
+    accelYData->setValue(-accel.y()/10) ;
     accelZData->setValue(accel.z()/10) ;
 
 

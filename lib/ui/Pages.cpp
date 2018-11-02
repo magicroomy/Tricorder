@@ -333,17 +333,17 @@ void AccelerationPage::setSensorData( SensorData *accelX ,
   accelZMaxPos  = new SensorData() ;
   accelZMaxPos->setValue(0) ;
   
-  accelXText = new Text(70, 175, "%.1lf", BLACK, GO.lcd.color565(74,233,113), 2, accelX);
-  accelYText = new Text(81, 87, "%.1lf", BLACK, GO.lcd.color565(134,166,223), 2, accelY);
+  accelXText = new Text(50, 175, "%.1lf", BLACK, GO.lcd.color565(74,233,113), 2, accelX);
+  accelYText = new Text(71, 87, "%.1lf", BLACK, GO.lcd.color565(134,166,223), 2, accelY);
   accelZText = new Text(207, 51, "%.1lf", BLACK, GO.lcd.color565(141,252,234), 2, accelZ);
   
-  accelXMaxNegText = new Text(60, 90, "%.1lf", BLACK, GO.lcd.color565(74,233,113), 2, accelXMaxNeg);
-  accelYMaxNegText = new Text(60, 110, "%.1lf", BLACK, GO.lcd.color565(134,166,223), 2, accelYMaxNeg);
-  accelZMaxNEgText = new Text(145, 130, "%.1lf", BLACK, GO.lcd.color565(141,252,234), 2, accelZMaxNeg);
+  accelXMaxNegText = new Text(50, 195, "%.1lf", BLACK, GO.lcd.color565(74,233,113), 2, accelXMaxNeg);
+  accelYMaxNegText = new Text(71, 110, "%.1lf", BLACK, GO.lcd.color565(134,166,223), 2, accelYMaxNeg);
+  accelZMaxNegText = new Text(207, 71, "%.1lf", BLACK, GO.lcd.color565(141,252,234), 2, accelZMaxNeg);
   
-  accelXMaxPosText = new Text(100, 90, "%.1lf", BLACK, GO.lcd.color565(74,233,113), 2, accelXMaxPos);
-  accelYMaxPosText = new Text(100, 110, "%.1lf", BLACK, GO.lcd.color565(134,166,223), 2, accelYMaxPos);
-  accelZMaxPosText = new Text(185, 130, "%.1lf", BLACK, GO.lcd.color565(141,252,234), 2, accelZMaxPos);
+  accelXMaxPosText = new Text(110, 195, "%.1lf", BLACK, GO.lcd.color565(74,233,113), 2, accelXMaxPos);
+  accelYMaxPosText = new Text(131, 110, "%.1lf", BLACK, GO.lcd.color565(134,166,223), 2, accelYMaxPos);
+  accelZMaxPosText = new Text(267, 71, "%.1lf", BLACK, GO.lcd.color565(141,252,234), 2, accelZMaxPos);
   
 }
 
@@ -353,30 +353,30 @@ void AccelerationPage::draw()
   accelYText->draw() ;
   accelZText->draw() ;
   
-  if ( this->accelX.getValue() < accelXMaxNeg->getValue() )
+  if ( this->accelX->getValue() < accelXMaxNeg->getValue() )
   {
-	accelXMaxNeg.setValue(accelX.getValue()) ;  
+	accelXMaxNeg->setValue(accelX->getValue()) ;  
   }
-  if ( this->accelY.getValue() < accelYMaxNeg->getValue() )
+  if ( this->accelY->getValue() < accelYMaxNeg->getValue() )
   {
-	accelYMaxNeg.setValue(accelY.getValue()) ;  
+	accelYMaxNeg->setValue(accelY->getValue()) ;  
   }
-  if ( this->accelZ.getValue() < accelZMaxNeg->getValue() )
+  if ( this->accelZ->getValue() < accelZMaxNeg->getValue() )
   {
-	accelZMaxNeg.setValue(accelZ.getValue()) ;  
+	accelZMaxNeg->setValue(accelZ->getValue()) ;  
   }
 
-  if ( this->accelX.getValue() > accelXMaxPos->getValue() )
+  if ( this->accelX->getValue() > accelXMaxPos->getValue() )
   {
-	accelXMaxPos.setValue(accelX.getValue()) ;  
+	accelXMaxPos->setValue(accelX->getValue()) ;  
   }
-  if ( this->accelY.getValue() > accelYMaxPos->getValue() )
+  if ( this->accelY->getValue() > accelYMaxPos->getValue() )
   {
-	accelYMaxPos.setValue(accelY.getValue()) ;  
+	accelYMaxPos->setValue(accelY->getValue()) ;  
   }
-  if ( this->accelZ.getValue() > accelZMaxPos->getValue() )
+  if ( this->accelZ->getValue() > accelZMaxPos->getValue() )
   {
-	accelZMaxPos.setValue(accelZ.getValue()) ;  
+	accelZMaxPos->setValue(accelZ->getValue()) ;  
   }
 
   accelXMaxNegText->draw() ;
