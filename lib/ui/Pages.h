@@ -161,6 +161,7 @@ class AccelerationPage : public Page  {
     public:
       virtual void init() ;
       virtual void draw() ;
+	  virtual void buttonsPressed( bool menu, bool volume, bool select, bool start) ;
 
       void setSensorData( SensorData *accelX ,
                           SensorData *accelY ,
@@ -171,16 +172,22 @@ class AccelerationPage : public Page  {
       SensorData *accelX ;
       SensorData *accelY ;
       SensorData *accelZ ;
-      SensorData *accelXMax ;
-      SensorData *accelYMax ;
-      SensorData *accelZMax ;
+      SensorData *accelXMaxNeg ;
+      SensorData *accelYMaxNeg ;
+      SensorData *accelZMaxNeg ;
+      SensorData *accelXMaxPos ;
+      SensorData *accelYMaxPos ;
+      SensorData *accelZMaxPos ;
 
       Text *accelXText ;
       Text *accelYText ;
       Text *accelZText ;
-      Text *accelXMaxText ;
-      Text *accelYMaxText ;
-      Text *accelZMaxText ;
+      Text *accelXMaxNegText ;
+      Text *accelYMaxNegText ;
+      Text *accelZMaxNegText ;
+      Text *accelXMaxPosText ;
+      Text *accelYMaxPosText ;
+      Text *accelZMaxPosText ;
 
 };
 

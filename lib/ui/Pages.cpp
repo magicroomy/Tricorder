@@ -320,19 +320,30 @@ void AccelerationPage::setSensorData( SensorData *accelX ,
   this->accelY = accelY;
   this->accelZ = accelZ;
 
-  accelXMax  = new SensorData() ;
-  accelXMax->setValue(0) ;
-  accelYMax  = new SensorData() ;
-  accelYMax->setValue(0) ;
-  accelZMax  = new SensorData() ;
-  accelZMax->setValue(0) ;
-
+  accelXMaxNeg  = new SensorData() ;
+  accelXMaxNeg->setValue(0) ;
+  accelYMaxNeg  = new SensorData() ;
+  accelYMaxNeg->setValue(0) ;
+  accelZMaxNeg  = new SensorData() ;
+  accelZMaxNeg->setValue(0) ;
+  accelXMaxPos  = new SensorData() ;
+  accelXMaxPos->setValue(0) ;
+  accelYMaxPos  = new SensorData() ;
+  accelYMaxPos->setValue(0) ;
+  accelZMaxPos  = new SensorData() ;
+  accelZMaxPos->setValue(0) ;
+  
   accelXText = new Text(70, 175, "%.1lf", BLACK, GO.lcd.color565(74,233,113), 2, accelX);
   accelYText = new Text(81, 87, "%.1lf", BLACK, GO.lcd.color565(134,166,223), 2, accelY);
   accelZText = new Text(207, 51, "%.1lf", BLACK, GO.lcd.color565(141,252,234), 2, accelZ);
-  accelXMaxText = new Text(60, 90, "%.1lf", BLUE, BLACK, 2, accelX);
-  accelYMaxText = new Text(60, 110, "%.1lf", BLUE, BLACK, 2, accelY);
-  accelZMaxText = new Text(145, 130, "%.1lf", YELLOW, BLACK, 2, accelZ);
+  
+  accelXMaxNegText = new Text(60, 90, "%.1lf", BLACK, GO.lcd.color565(74,233,113), 2, accelXMaxNeg);
+  accelYMaxNegText = new Text(60, 110, "%.1lf", BLACK, GO.lcd.color565(134,166,223), 2, accelYMaxNeg);
+  accelZMaxNEgText = new Text(145, 130, "%.1lf", BLACK, GO.lcd.color565(141,252,234), 2, accelZMaxNeg);
+  
+  accelXMaxPosText = new Text(100, 90, "%.1lf", BLACK, GO.lcd.color565(74,233,113), 2, accelXMaxPos);
+  accelYMaxPosText = new Text(100, 110, "%.1lf", BLACK, GO.lcd.color565(134,166,223), 2, accelYMaxPos);
+  accelZMaxPosText = new Text(185, 130, "%.1lf", BLACK, GO.lcd.color565(141,252,234), 2, accelZMaxPos);
   
 }
 
@@ -341,6 +352,56 @@ void AccelerationPage::draw()
   accelXText->draw() ;
   accelYText->draw() ;
   accelZText->draw() ;
+  
+  if ( this->accelX.getValue() < accelXMaxNeg->getValue() )
+  {
+	accelXMaxNeg.setValue(accelX.getValue()) ;  
+  }
+  if ( this->accelY.getValue() < accelYMaxNeg->getValue() )
+  {
+	accelYMaxNeg.setValue(accelY.getValue()) ;  
+  }
+  if ( this->accelZ.getValue() < accelZMaxNeg->getValue() )
+  {
+	accelZMaxNeg.setValue(accelZ.getValue()) ;  
+  }
 
+  if ( this->accelX.getValue() > accelXMaxPos->getValue() )
+  {
+	accelXMaxPos.setValue(accelX.getValue()) ;  
+  }
+  if ( this->accelY.getValue() > accelYMaxPos->getValue() )
+  {
+	accelYMaxPos.setValue(accelY.getValue()) ;  
+  }
+  if ( this->accelZ.getValue() > accelZMaxPos->getValue() )
+  {
+	accelZMaxPos.setValue(accelZ.getValue()) ;  
+  }
 
+  accelXMaxNegText->draw() ;
+  accelYMaxNegText->draw() ;
+  accelZMaxNegText->draw() ;
+  accelXMaxPosText->draw() ;
+  accelYMaxPosText->draw() ;
+  accelZMaxPosText->draw() ;
+
+}
+void AccelerationPage::buttonsPressed( bool menu, bool volume, bool select, bool start) 
+{
+	if ( start )
+	{
+
+  accelXMaxNeg->setValue(0) ;
+
+  accelYMaxNeg->setValue(0) ;
+
+  accelZMaxNeg->setValue(0) ;
+
+  accelXMaxPos->setValue(0) ;
+
+  accelYMaxPos->setValue(0) ;
+
+  accelZMaxPos->setValue(0) ;
+	}
 }
