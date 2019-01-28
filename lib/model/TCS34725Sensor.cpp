@@ -92,7 +92,7 @@ void TCS34725Sensor::update(void) {
 }
 
 
-void TCS34725Sensor::begin()
+bool TCS34725Sensor::begin()
 {
   tcs = Adafruit_TCS34725(agc_lst[agc_cur].at, agc_lst[agc_cur].ag);
   if ((isOK = tcs.begin()))
@@ -100,6 +100,7 @@ void TCS34725Sensor::begin()
     setGainTime();
     tcs.setInterrupt(true) ;
   }
+  return isOK  ;
 
 }
 

@@ -35,7 +35,7 @@ void VEML6040Sensor::update(void) {
   
 }
 
-void VEML6040Sensor::begin()
+bool VEML6040Sensor::begin()
 {
   RGBWSensor = new VEML6040() ;
   isOK = RGBWSensor->begin() ;
@@ -47,6 +47,7 @@ void VEML6040Sensor::begin()
   {
     RGBWSensor->setConfiguration(VEML6040_IT_160MS + VEML6040_AF_AUTO + VEML6040_SD_ENABLE);
   }
+  return isOK ;
 
 }
 

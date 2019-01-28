@@ -10,7 +10,7 @@ VEML6075Sensor::VEML6075Sensor()
 
 }
 
-void VEML6075Sensor::begin()
+bool VEML6075Sensor::begin()
 {
   isOK = uv->begin() ;
 
@@ -18,6 +18,7 @@ void VEML6075Sensor::begin()
     Serial.println("Unable to communicate with VEML6075.");
 
   }
+  return isOK ; 
 }
 
 void VEML6075Sensor::update()

@@ -8,11 +8,12 @@ MLX90614Sensor::MLX90614Sensor()
 
 }
 
-void MLX90614Sensor::begin()
+bool MLX90614Sensor::begin()
 {
   isOK =true;
   tempSensor->begin(0x5a); // Initialize thermal IR sensor
   tempSensor->setUnit(TEMP_C); // Set the library's units to Farenheit
+  return isOK ;
 }
 
 void MLX90614Sensor::update()

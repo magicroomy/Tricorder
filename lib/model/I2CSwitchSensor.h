@@ -13,7 +13,7 @@ class I2CSWITCHSensor : public Sensor {
 
     public:
       I2CSWITCHSensor(int channel) ;
-      virtual void begin();
+      virtual bool begin();
       virtual void update();
     private:
       bool isOK = false ;

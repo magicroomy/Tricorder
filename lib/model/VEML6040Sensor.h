@@ -10,7 +10,7 @@ class VEML6040Sensor : public Sensor
 
 public:
   VEML6040Sensor();
-  virtual void begin();
+  virtual bool begin();
   virtual void update();
   SensorData *getRedSensorData();
   SensorData *getGreenSensorData();

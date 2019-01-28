@@ -9,13 +9,13 @@ BME280Sensor::BME280Sensor()
   pressData = new SensorData();
 }
 
-void BME280Sensor::begin()
+bool BME280Sensor::begin()
 {
   isOK = bme->begin(BME280_ADD);
   if (!isOK) {
     Serial.println("Could not find a valid BME280 sensor, check wiring!");
   }
-
+  return isOK ;
 }
 
 void BME280Sensor::update()

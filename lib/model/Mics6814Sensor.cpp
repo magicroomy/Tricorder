@@ -12,11 +12,12 @@ Mics6814Sensor::Mics6814Sensor()
   c2h5ohData = new SensorData();
 }
 
-void Mics6814Sensor::begin()
+bool Mics6814Sensor::begin()
 {
   isOK = true ;
   gas.begin(0x04); //the default I2C address of the slave is 0x04
   gas.powerOn();
+  return isOK ;
 
 }
 

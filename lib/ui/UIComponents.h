@@ -34,16 +34,19 @@ class Text : public UIComponent  {
       virtual void draw() ;
       virtual void reset() ;
       void setPosition(int x, int y) ;
+      void displayAbsolut(bool absolut) ;
 
     private:
       int x, y;
       char *format ;
+      bool absolut = false ;
       uint16_t fgcolor, bgcolor ;
       uint8_t textSize ;
       SensorData *sensorData ;
       int16_t lastTextLength= -1 ;
       int16_t charHeight= -1 ;
       int16_t charWidth= -1 ;
+
 };
 
 

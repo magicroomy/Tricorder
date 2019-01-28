@@ -8,7 +8,7 @@ class VEML6075Sensor : public Sensor {
 
     public:
       VEML6075Sensor() ;
-      virtual void begin();
+      virtual bool begin();
       virtual void update();
       SensorData* getUVASensorData() ;
       SensorData* getUVBSensorData() ;

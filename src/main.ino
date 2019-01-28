@@ -130,11 +130,16 @@ void setup()
 
   delay(40);
   Serial.println("INIT Sensors");
+  int initCount = 0 ;
 
   for (int i = 0; i < (sizeof(sensorlist) / sizeof(Sensor)); ++i)
   {
     Serial.printf("Init Sensor %d\n", i);
-    sensorlist[i]->begin();
+    if ( sensorlist[i]->begin() )
+    {
+      initCount++ ;
+    }
+    
     Serial.printf("Init Sensor %d INITIALIZED\n", i);
   }
 
@@ -147,6 +152,17 @@ void setup()
   GO.lcd.setTextSize(3);
   GO.lcd.setTextColor(CYAN, BLACK);
   GO.lcd.drawString("INIT COMPLETE", 50, 100);
+
+  if ( initCount != (sizeof(sensorlist) / sizeof(Sensor)) )
+  {
+    GO.lcd.setTextColor(RED, BLACK);
+    GO.lcd.drawString("SENSORS MISSING", 35, 140);
+                               
+    char missing[50] ;
+    sprintf(missing, "%d/%d", initCount,(sizeof(sensorlist) / sizeof(Sensor))) ;
+
+    GO.lcd.drawString(missing, 120, 180);
+  }
 
   //  pageList[currentPage]->init() ;
 }

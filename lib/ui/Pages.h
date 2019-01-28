@@ -179,9 +179,13 @@ class AccelerationPage : public Page  {
       SensorData *accelYMaxPos ;
       SensorData *accelZMaxPos ;
 
-      Text *accelXText ;
-      Text *accelYText ;
-      Text *accelZText ;
+      Text *accelXPosText ;
+      Text *accelYPosText ;
+      Text *accelZPosText ;
+      Text *accelXNegText ;
+      Text *accelYNegText ;
+      Text *accelZNegText ;
+
       Text *accelXMaxNegText ;
       Text *accelYMaxNegText ;
       Text *accelZMaxNegText ;

@@ -5,7 +5,7 @@ I2CSWITCHSensor::I2CSWITCHSensor(int channel)
  this->channel = channel ;
 }
 
-void I2CSWITCHSensor::begin()
+bool I2CSWITCHSensor::begin()
 {
    Wire.beginTransmission(TCA9543A_ADDRESS);
   uint8_t error = Wire.endTransmission();
@@ -19,7 +19,7 @@ void I2CSWITCHSensor::begin()
   {
     Serial.println("Unable to find Switch") ;
   }
-
+	return isOK ;
 
 }
 

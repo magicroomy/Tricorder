@@ -59,6 +59,11 @@ BarGraph::BarGraph(int x, int y, int width, int height, double min, double max, 
 void Text::draw()
 {
     double value = sensorData->getValue() ;
+    if ( absolut &  value < 0 )
+    {
+      value *=-1 ;
+
+    }
     char formatted[30]  ;
     sprintf(formatted, format, value) ;
     if ( lastTextLength >= 0)
@@ -94,4 +99,9 @@ void Text::setPosition(int x, int y)
 {
   this->x = x ;
   this->y = y ;
+}
+
+void Text::displayAbsolut(bool absolut) 
+{
+  this->absolut = absolut ;
 }

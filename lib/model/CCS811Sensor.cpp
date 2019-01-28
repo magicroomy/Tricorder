@@ -10,7 +10,7 @@ CCS811Sensor::CCS811Sensor()
 
 }
 
-void CCS811Sensor::begin()
+bool CCS811Sensor::begin()
 {
   isOK =ccs->begin(  0x5B  ) ;
   // VOC
@@ -27,7 +27,7 @@ void CCS811Sensor::begin()
       ccs->setDriveMode(CCS811_DRIVE_MODE_1SEC) ;
 
   }
-
+  return isOK ;
 
 }
 

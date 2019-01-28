@@ -8,7 +8,7 @@ class VL53L0XSensor : public Sensor {
 
     public:
       VL53L0XSensor() ;
-      virtual void begin();
+      virtual bool begin();
       virtual void update();
       SensorData* getDistanceSensorData() ;
     private:

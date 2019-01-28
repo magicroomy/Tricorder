@@ -10,7 +10,7 @@ class BNO055Sensor : public Sensor {
 
     public:
       BNO055Sensor() ;
-      virtual void begin();
+      virtual bool begin();
       virtual void update();
       SensorData* getRotationSensorData() ;
       SensorData* getRollSensorData() ;

@@ -306,7 +306,7 @@ void OrientationPage::draw()
 void AccelerationPage::init()
 {
   Serial.println("INIT Acceleration PAGE");
-  GO.lcd.drawJpgFile(SPIFFS, "/Acceleration.jpg", 0, 0, 320, 240, 0, 0, JPEG_DIV_NONE);
+  GO.lcd.drawJpgFile(SPIFFS, "/Acceleration2.jpg", 0, 0, 320, 240, 0, 0, JPEG_DIV_NONE);
 
 
 
@@ -333,6 +333,34 @@ void AccelerationPage::setSensorData( SensorData *accelX ,
   accelZMaxPos  = new SensorData() ;
   accelZMaxPos->setValue(0) ;
   
+  accelXNegText = new Text(222, 158, "%.1lf", WHITE, BLACK, 2, accelX);
+  accelXNegText->displayAbsolut(true) ;
+  accelYPosText = new Text(223, 59, "%.1lf", WHITE, BLACK, 2, accelY);
+  accelYPosText->displayAbsolut(true) ;
+  accelZPosText = new Text(158, 32, "%.1lf", WHITE, BLACK, 2, accelZ);
+  accelZPosText->displayAbsolut(true) ;
+  accelXPosText = new Text(72,70, "%.1lf", WHITE, BLACK, 2, accelX);  
+  accelXPosText->displayAbsolut(true) ;
+  accelYNegText = new Text(99,168, "%.1lf", WHITE, BLACK, 2, accelY);
+  accelYNegText->displayAbsolut(true) ;
+  accelZNegText = new Text(160,187, "%.1lf", WHITE, BLACK, 2, accelZ);
+  accelZNegText->displayAbsolut(true) ;
+
+  accelXMaxNegText = new Text(222, 178, "%.1lf", BLUE, BLACK, 2, accelXMaxPos);
+  accelXMaxNegText->displayAbsolut(true) ;
+  accelYMaxPosText = new Text(223, 79, "%.1lf", BLUE, BLACK, 2, accelYMaxPos);
+  accelYMaxPosText->displayAbsolut(true) ;
+  accelZMaxPosText = new Text(158, 52, "%.1lf", BLUE, BLACK, 2, accelZMaxPos);
+  accelZMaxPosText->displayAbsolut(true) ;
+  accelXMaxPosText = new Text(72,90, "%.1lf", BLUE, BLACK, 2, accelXMaxNeg);
+  accelXMaxPosText->displayAbsolut(true) ;
+  accelYMaxNegText = new Text(99,188, "%.1lf", BLUE, BLACK, 2, accelYMaxNeg);
+  accelYMaxNegText->displayAbsolut(true) ;
+  accelZMaxNegText = new Text(160,207, "%.1lf", BLUE, BLACK, 2, accelZMaxNeg);
+  accelZMaxNegText->displayAbsolut(true) ;
+
+
+/* Old Accel
   accelXText = new Text(50, 175, "%.1lf", BLACK, GO.lcd.color565(74,233,113), 2, accelX);
   accelYText = new Text(71, 87, "%.1lf", BLACK, GO.lcd.color565(134,166,223), 2, accelY);
   accelZText = new Text(207, 51, "%.1lf", BLACK, GO.lcd.color565(141,252,234), 2, accelZ);
@@ -344,14 +372,45 @@ void AccelerationPage::setSensorData( SensorData *accelX ,
   accelXMaxPosText = new Text(110, 195, "%.1lf", BLACK, GO.lcd.color565(74,233,113), 2, accelXMaxPos);
   accelYMaxPosText = new Text(131, 110, "%.1lf", BLACK, GO.lcd.color565(134,166,223), 2, accelYMaxPos);
   accelZMaxPosText = new Text(267, 71, "%.1lf", BLACK, GO.lcd.color565(141,252,234), 2, accelZMaxPos);
-  
+*/
+
+
 }
 
 void AccelerationPage::draw()
 {
-  accelXText->draw() ;
-  accelYText->draw() ;
-  accelZText->draw() ;
+  if ( accelX->getValue()>= 0)
+  {
+    GO.lcd.fillRect(222, 158, 57, 16, BLACK) ;
+    accelXPosText->draw() ;
+  }
+  else
+  {
+    GO.lcd.fillRect(72,70, 57, 16, BLACK) ;
+    accelXNegText->draw() ;
+  }
+
+  if ( accelY->getValue()>= 0)
+  {
+    GO.lcd.fillRect(99,168, 57, 16, BLACK) ;
+    accelYPosText->draw() ;
+  }
+  else
+  {
+    GO.lcd.fillRect(223, 59, 57, 16, BLACK) ;
+    accelYNegText->draw() ;
+  }
+
+  if ( accelZ->getValue()>= 0)
+  {
+    GO.lcd.fillRect(160,187, 57, 16, BLACK) ;
+    accelZPosText->draw() ;
+  }
+  else
+  {
+    GO.lcd.fillRect(158, 32, 57, 16, BLACK) ;
+    accelZNegText->draw() ;
+  }
   
   if ( this->accelX->getValue() < accelXMaxNeg->getValue() )
   {

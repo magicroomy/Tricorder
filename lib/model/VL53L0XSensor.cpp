@@ -8,13 +8,15 @@ VL53L0XSensor::VL53L0XSensor()
 
 }
 
-void VL53L0XSensor::begin()
+bool VL53L0XSensor::begin()
 {
   isOK =true;
 
   distSensor->init();
   distSensor->setTimeout(500);
   distSensor->startContinuous(100);
+
+  return isOK ;
 
 }
 

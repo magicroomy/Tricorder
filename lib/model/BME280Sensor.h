@@ -10,7 +10,7 @@ class BME280Sensor : public Sensor {
 
     public:
       BME280Sensor() ;
-      virtual void begin();
+      virtual bool begin();
       virtual void update();
       SensorData* getTempSensorData() ;
       SensorData* getHumSensorData() ;

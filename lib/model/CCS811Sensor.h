@@ -8,7 +8,7 @@ class CCS811Sensor : public Sensor {
 
     public:
       CCS811Sensor() ;
-      virtual void begin();
+      virtual bool begin();
       virtual void update();
       SensorData* getCO2SensorData() ;
       SensorData* getVOCSensorData() ;

@@ -8,7 +8,7 @@ class MLX90614Sensor : public Sensor {
 
     public:
       MLX90614Sensor() ;
-      virtual void begin();
+      virtual bool begin();
       virtual void update();
       SensorData* getTempSensorData() ;
     private:

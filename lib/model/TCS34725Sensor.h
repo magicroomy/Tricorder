@@ -17,7 +17,7 @@ class TCS34725Sensor : public Sensor
 
 public:
   TCS34725Sensor();
-  virtual void begin();
+  virtual bool begin();
   virtual void update();
   SensorData *getRedSensorData();
   SensorData *getGreenSensorData();

@@ -12,7 +12,7 @@ BNO055Sensor::BNO055Sensor()
 
 }
 
-void BNO055Sensor::begin()
+bool BNO055Sensor::begin()
 {
   
   isOK = bno->begin(Adafruit_BNO055::adafruit_bno055_opmode_t::OPERATION_MODE_NDOF) ;
@@ -30,6 +30,7 @@ void BNO055Sensor::begin()
     bno->setExtCrystalUse(true);
 
   }
+  return isOK ;
 }
 
 void BNO055Sensor::update()

@@ -8,7 +8,7 @@ class Mics6814Sensor : public Sensor {
 
     public:
       Mics6814Sensor() ;
-      virtual void begin();
+      virtual bool begin();
       virtual void update();
       SensorData* getNH3SensorData() ;
       SensorData* getCOSensorData() ;
